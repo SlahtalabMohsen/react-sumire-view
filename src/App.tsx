@@ -1,15 +1,13 @@
-import { useCallback, useMemo, useRef, useState, useEffect } from 'react';
+import { useCallback, useMemo, useRef, useState, useEffect, lazy, Suspense } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Header } from './components/Header/Header';
 import { VideoPlayer } from './components/VideoPlayer/VideoPlayer';
 import { SubtitlePanel } from './components/SubtitlePanel/SubtitlePanel';
 import { SubtitleImport } from './components/SubtitleImport/SubtitleImport';
 import { SubtitleLog } from './components/SubtitleLog/SubtitleLog';
-import { Settings } from './components/Settings/Settings';
 import { BookmarkPanel } from './components/BookmarkPanel/BookmarkPanel';
 import { CommentSection } from './components/CommentSection/CommentSection';
 import { MinimalSidebar } from './components/MinimalSidebar/MinimalSidebar';
-import { VocabularyList } from './components/VocabularyList/VocabularyList';
 import { CherryBlossom } from './components/CherryBlossom/CherryBlossom';
 import { useVideoPlayer } from './hooks/useVideoPlayer';
 import { useSubtitles } from './hooks/useSubtitles';
@@ -19,6 +17,9 @@ import { useVocabulary } from './hooks/useVocabulary';
 import { usePanelResize } from './hooks/usePanelResize';
 import type { Bookmark, Comment, PlayerSettings } from './types';
 import './App.css';
+
+const Settings = lazy(() => import('./components/Settings/Settings').then(m => ({ default: m.Settings })));
+const VocabularyList = lazy(() => import('./components/VocabularyList/VocabularyList').then(m => ({ default: m.VocabularyList })));
 
 type TabId = 'subtitles' | 'bookmarks' | 'comments' | 'vocabulary' | 'log';
 
@@ -208,15 +209,18 @@ function App() {
           comments={comments}
           onAddComment={handleAddComment}
           currentTime={player.currentTime}
+          onSeek={player.seek}
         />
       )}
 
       {activeTab === 'vocabulary' && (
-        <VocabularyList
-          words={vocabulary.words}
-          onRemove={vocabulary.removeWord}
-          onSeek={player.seek}
-        />
+        <Suspense fallback={<div style={{ padding: '16px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '12px' }}>Loading...</div>}>
+          <VocabularyList
+            words={vocabulary.words}
+            onRemove={vocabulary.removeWord}
+            onSeek={player.seek}
+          />
+        </Suspense>
       )}
 
       {activeTab === 'log' && (
@@ -339,22 +343,24 @@ function App() {
         </AnimatePresence>
       </main>
 
-      <Settings
-        isOpen={settingsOpen}
-        onClose={() => setSettingsOpen(false)}
-        settings={settings}
-        onUpdateSettings={handleUpdateSettings}
-        tracks={tracks}
-        activeTrackIds={activeTrackIds}
-        onToggleTrack={toggleTrack}
-        onRemoveTrack={removeTrack}
-        themeMode={themeMode}
-        onSetThemeMode={setThemeMode}
-        layoutDensity={layoutDensity}
-        onSetLayoutDensity={setLayoutDensity}
-        season={season}
-        onSetSeason={setSeason}
-      />
+      <Suspense fallback={null}>
+        <Settings
+          isOpen={settingsOpen}
+          onClose={() => setSettingsOpen(false)}
+          settings={settings}
+          onUpdateSettings={handleUpdateSettings}
+          tracks={tracks}
+          activeTrackIds={activeTrackIds}
+          onToggleTrack={toggleTrack}
+          onRemoveTrack={removeTrack}
+          themeMode={themeMode}
+          onSetThemeMode={setThemeMode}
+          layoutDensity={layoutDensity}
+          onSetLayoutDensity={setLayoutDensity}
+          season={season}
+          onSetSeason={setSeason}
+        />
+      </Suspense>
     </div>
   );
 }

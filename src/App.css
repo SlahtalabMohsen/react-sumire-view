@@ -104,4 +104,7 @@
   .subtitle-area.fs-subtitle {
     height: 180px;
   }
+  .panel-resize-divider {
+    display: none;
+  }
 }

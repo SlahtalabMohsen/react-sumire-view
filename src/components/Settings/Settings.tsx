@@ -67,7 +67,7 @@ export function Settings({
           >
             <div className="settings-header">
               <h2>Settings</h2>
-              <button className="settings-close" onClick={onClose}>
+              <button className="settings-close" onClick={onClose} aria-label="Close settings">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18" />
                   <line x1="6" y1="6" x2="18" y2="18" />
@@ -163,6 +163,9 @@ export function Settings({
                   <button
                     className={`toggle-switch ${settings.showFurigana ? 'on' : ''}`}
                     onClick={() => onUpdateSettings({ showFurigana: !settings.showFurigana })}
+                    role="switch"
+                    aria-checked={settings.showFurigana}
+                    aria-label="Toggle furigana display"
                   >
                     <div className="toggle-knob" />
                   </button>
@@ -172,6 +175,9 @@ export function Settings({
                   <button
                     className={`toggle-switch ${settings.showSubtitlesInFullscreen ? 'on' : ''}`}
                     onClick={() => onUpdateSettings({ showSubtitlesInFullscreen: !settings.showSubtitlesInFullscreen })}
+                    role="switch"
+                    aria-checked={settings.showSubtitlesInFullscreen}
+                    aria-label="Toggle fullscreen subtitles"
                   >
                     <div className="toggle-knob" />
                   </button>

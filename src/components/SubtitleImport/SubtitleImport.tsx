@@ -65,6 +65,8 @@ export function SubtitleImport({ onImport }: SubtitleImportProps) {
       onDragLeave={handleDragLeave}
       whileHover={{ scale: 1.01 }}
       transition={{ duration: 0.15 }}
+      role="region"
+      aria-label="Import subtitle file"
     >
       <div className="import-icon-wrap">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">

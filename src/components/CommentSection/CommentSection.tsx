@@ -6,10 +6,11 @@ import './CommentSection.css';
 interface CommentSectionProps {
   comments: Comment[];
   onAddComment: (comment: Comment) => void;
+  onSeek: (time: number) => void;
   currentTime: number;
 }
 
-export function CommentSection({ comments, onAddComment, currentTime }: CommentSectionProps) {
+export function CommentSection({ comments, onAddComment, onSeek, currentTime }: CommentSectionProps) {
   const [text, setText] = useState('');
   const [author, setAuthor] = useState(() => {
     return localStorage.getItem('sv-username') || '';
@@ -88,8 +89,9 @@ export function CommentSection({ comments, onAddComment, currentTime }: CommentS
                   <span className="comment-name">{cmt.author}</span>
                   <button
                     className="comment-time-link"
-                    onClick={() => {}}
+                    onClick={() => onSeek(cmt.timestamp)}
                     title="Jump to timestamp"
+                    aria-label={`Jump to ${formatTime(cmt.timestamp)}`}
                   >
                     {formatTime(cmt.timestamp)}
                   </button>

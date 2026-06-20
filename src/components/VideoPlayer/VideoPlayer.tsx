@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useCallback, type RefObject } from 'react';
+import { useRef, useState, useEffect, useCallback, memo, type RefObject } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { formatTime } from '../../utils/time';
 import './VideoPlayer.css';
@@ -27,7 +27,7 @@ interface VideoPlayerProps {
 
 const PLAYBACK_RATES = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
 
-export function VideoPlayer({
+export const VideoPlayer = memo(function VideoPlayer({
   videoRef,
   isPlaying,
   onTogglePlay,
@@ -131,16 +131,25 @@ export function VideoPlayer({
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
+
+    const onPlay = () => setIsPlaying(true);
+    const onPause = () => setIsPlaying(false);
+    const onLoadedData = () => setHasSource(true);
+
     video.addEventListener('timeupdate', handleTimeUpdate);
     video.addEventListener('loadedmetadata', handleLoadedMetadata);
     video.addEventListener('progress', handleProgress);
-    video.addEventListener('play', () => setIsPlaying(true));
-    video.addEventListener('pause', () => setIsPlaying(false));
-    video.addEventListener('loadeddata', () => setHasSource(true));
+    video.addEventListener('play', onPlay);
+    video.addEventListener('pause', onPause);
+    video.addEventListener('loadeddata', onLoadedData);
+
     return () => {
       video.removeEventListener('timeupdate', handleTimeUpdate);
       video.removeEventListener('loadedmetadata', handleLoadedMetadata);
       video.removeEventListener('progress', handleProgress);
+      video.removeEventListener('play', onPlay);
+      video.removeEventListener('pause', onPause);
+      video.removeEventListener('loadeddata', onLoadedData);
     };
   }, [videoRef, handleTimeUpdate, handleLoadedMetadata, handleProgress, setIsPlaying]);
 
@@ -161,6 +170,7 @@ export function VideoPlayer({
         className="video-element"
         onClick={handleVideoClick}
         playsInline
+        aria-label="Video player"
       />
 
       {!hasSource && (
@@ -213,6 +223,11 @@ export function VideoPlayer({
                 onClick={handleProgressClick}
                 onMouseMove={handleProgressHover}
                 onMouseLeave={() => setHoverTime(null)}
+                role="slider"
+                aria-label="Video progress"
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={Math.round(progress)}
               >
                 <div className="progress-buffered" style={{ width: `${bufferedPct}%` }} />
                 <div className="progress-played" style={{ width: `${progress}%` }}>
@@ -233,6 +248,7 @@ export function VideoPlayer({
                   onClick={onTogglePlay}
                   whileTap={{ scale: 0.9 }}
                   title="Play/Pause (Space)"
+                  aria-label={isPlaying ? 'Pause' : 'Play'}
                 >
                   {isPlaying ? (
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -251,6 +267,7 @@ export function VideoPlayer({
                   onClick={() => onSkip(-5)}
                   whileTap={{ scale: 0.9 }}
                   title="Back 5s (←)"
+                  aria-label="Skip backward 5 seconds"
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="1 4 1 10 7 10" />
@@ -263,6 +280,7 @@ export function VideoPlayer({
                   onClick={() => onSkip(5)}
                   whileTap={{ scale: 0.9 }}
                   title="Forward 5s (→)"
+                  aria-label="Skip forward 5 seconds"
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="23 4 23 10 17 10" />
@@ -276,6 +294,7 @@ export function VideoPlayer({
                     onClick={onToggleMute}
                     whileTap={{ scale: 0.9 }}
                     title="Mute (M)"
+                    aria-label={isMuted ? 'Unmute' : 'Mute'}
                   >
                     {isMuted || volume === 0 ? (
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -303,6 +322,7 @@ export function VideoPlayer({
                     step={0.05}
                     value={isMuted ? 0 : volume}
                     onChange={e => onChangeVolume(Number(e.target.value))}
+                    aria-label="Volume"
                   />
                 </div>
 
@@ -318,6 +338,8 @@ export function VideoPlayer({
                     onClick={() => setShowSpeedMenu(!showSpeedMenu)}
                     whileTap={{ scale: 0.95 }}
                     title="Speed"
+                    aria-label={`Playback speed: ${playbackRate}x`}
+                    aria-expanded={showSpeedMenu}
                   >
                     {playbackRate}x
                   </motion.button>
@@ -352,6 +374,7 @@ export function VideoPlayer({
                   onClick={() => onToggleFullscreen(containerRef.current)}
                   whileTap={{ scale: 0.9 }}
                   title="Fullscreen (F)"
+                  aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
                 >
                   {isFullscreen ? (
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -376,4 +399,4 @@ export function VideoPlayer({
       </AnimatePresence>
     </div>
   );
-}
+});

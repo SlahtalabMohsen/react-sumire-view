@@ -87,6 +87,9 @@ export function MinimalSidebar({
               className={`rail-btn ${activeTab === tab.id && isExpanded ? 'active' : ''}`}
               onClick={() => handleTabClick(tab.id)}
               title=""
+              role="tab"
+              aria-selected={activeTab === tab.id}
+              aria-label={tab.label}
             >
               <span
                 className="rail-icon"
@@ -113,7 +116,7 @@ export function MinimalSidebar({
               <span className="panel-title">
                 {TABS.find(t => t.id === activeTab)?.label}
               </span>
-              <button className="panel-close" onClick={onToggleExpand}>
+              <button className="panel-close" onClick={onToggleExpand} aria-label="Close panel">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18" />
                   <line x1="6" y1="6" x2="18" y2="18" />

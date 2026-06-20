@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion';
+import type { ThemeMode } from '../../types';
 import './Header.css';
 
 interface HeaderProps {
-  themeMode: string;
+  themeMode: ThemeMode;
   onCycleTheme: () => void;
   onOpenSettings: () => void;
   metadata?: {
@@ -12,7 +13,7 @@ interface HeaderProps {
   };
 }
 
-const THEME_ICONS: Record<string, string> = {
+const THEME_ICONS: Record<ThemeMode, string> = {
   light: '☀️',
   dark: '🌙',
   sepia: '📜',
@@ -47,6 +48,7 @@ export function Header({ themeMode, onCycleTheme, onOpenSettings, metadata }: He
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           title="Settings"
+          aria-label="Open settings"
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="3" />
@@ -59,6 +61,7 @@ export function Header({ themeMode, onCycleTheme, onOpenSettings, metadata }: He
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           title={`Theme: ${themeMode}`}
+          aria-label={`Current theme: ${themeMode}. Click to cycle theme.`}
         >
           <span className="theme-icon">{THEME_ICONS[themeMode] || '☀️'}</span>
         </motion.button>

@@ -15,7 +15,11 @@ export function useVocabulary() {
 
   const persist = useCallback((next: VocabularyWord[]) => {
     setWords(next);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+    } catch {
+      // localStorage may be full or unavailable
+    }
   }, []);
 
   const addWord = useCallback(

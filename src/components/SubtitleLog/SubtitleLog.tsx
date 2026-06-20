@@ -1,4 +1,4 @@
-import { useMemo, useRef, useEffect, useState } from 'react';
+import { useMemo, useRef, useEffect, useState, memo } from 'react';
 import { motion } from 'framer-motion';
 import type { SubtitleTrack } from '../../types';
 import { formatTime } from '../../utils/time';
@@ -13,7 +13,7 @@ interface SubtitleLogProps {
   showFurigana?: boolean;
 }
 
-export function SubtitleLog({
+export const SubtitleLog = memo(function SubtitleLog({
   tracks,
   activeTrackIds,
   currentTime,
@@ -76,6 +76,7 @@ export function SubtitleLog({
           placeholder="Search dialogue..."
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
+          aria-label="Search dialogue"
         />
       </div>
 
@@ -93,6 +94,10 @@ export function SubtitleLog({
                 ref={isActive ? activeRef : undefined}
                 className={`log-entry ${isActive ? 'active' : ''}`}
                 onClick={() => onSeek(cue.startTime)}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSeek(cue.startTime); } }}
+                tabIndex={0}
+                role="button"
+                aria-label={`Jump to ${formatTime(cue.startTime)}: ${cue.text}`}
                 whileHover={{ x: 2 }}
                 transition={{ duration: 0.1 }}
               >
@@ -114,4 +119,4 @@ export function SubtitleLog({
       </div>
     </div>
   );
-}
+});

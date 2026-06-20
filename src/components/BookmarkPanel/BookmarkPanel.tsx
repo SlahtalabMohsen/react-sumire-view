@@ -89,6 +89,7 @@ export function BookmarkPanel({
               <button
                 className="bookmark-remove"
                 onClick={() => onRemoveBookmark(bm.id)}
+                aria-label={`Remove bookmark: ${bm.label}`}
               >
                 ✕
               </button>

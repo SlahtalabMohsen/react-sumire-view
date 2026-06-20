@@ -114,4 +114,8 @@
   .header-center {
     display: none;
   }
+  .header-btn {
+    width: 44px;
+    height: 44px;
+  }
 }

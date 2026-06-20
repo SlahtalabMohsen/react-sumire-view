@@ -1,4 +1,4 @@
-import { useMemo, useCallback, useState } from 'react';
+import { useMemo, useCallback, useState, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { SubtitleCue, SubtitleTrack } from '../../types';
 import { segmentJapanese } from '../../utils/segment';
@@ -26,7 +26,6 @@ function renderFuriganaText(text: string): React.ReactNode {
       parts.push(
         <ruby key={key++} className="sv-ruby">
           {match[1]}
-          <rt className="sv-rt" aria-hidden="true" />
         </ruby>
       );
     } else {
@@ -37,7 +36,7 @@ function renderFuriganaText(text: string): React.ReactNode {
   return parts.length > 0 ? parts : text;
 }
 
-export function SubtitlePanel({
+export const SubtitlePanel = memo(function SubtitlePanel({
   tracks,
   activeTrackIds,
   currentTime,
@@ -143,4 +142,4 @@ export function SubtitlePanel({
       </AnimatePresence>
     </div>
   );
-}
+});
