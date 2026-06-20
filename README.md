@@ -6,7 +6,7 @@
 
 *Immerse yourself in anime while mastering Japanese — powered by Yomitan integration and a design that feels like home.*
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-7c3aed?style=for-the-badge)](https://SlahtalabMohsen.github.io/sumire-view/)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-7c3aed?style=for-the-badge)](https://SlahtalabMohsen.github.io/react-sumire-view/)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](#)
 
 </div>
@@ -100,7 +100,7 @@ npm run preview
 
 The live version is hosted on **GitHub Pages** at:
 
-> **https://SlahtalabMohsen.github.io/sumire-view/**
+> **https://SlahtalabMohsen.github.io/react-sumire-view/**
 
 To deploy your own instance:
 
