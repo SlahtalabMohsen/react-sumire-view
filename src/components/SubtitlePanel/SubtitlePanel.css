@@ -1,0 +1,117 @@
+.subtitle-panel {
+  height: 170px;
+  padding: 10px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.subtitle-panel.sv-fullscreen {
+  height: 210px;
+  padding: 10px 48px;
+  background: rgba(12, 10, 20, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.subtitle-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.subtitle-track {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.subtitle-track-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+
+.subtitle-line {
+  color: var(--text-primary);
+  line-height: 2;
+  text-align: center;
+  max-width: 720px;
+  padding: 4px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--subtitle-bg);
+  white-space: pre-wrap;
+  word-break: break-word;
+  cursor: text;
+  transition: background 0.2s;
+  user-select: text;
+  -webkit-user-select: text;
+  pointer-events: auto;
+}
+
+.sv-fullscreen .subtitle-line {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  padding: 5px 18px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.subtitle-line:hover {
+  background: var(--subtitle-bg-hover);
+}
+
+.sv-fullscreen .subtitle-line:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.subtitle-line.sv-word-flash {
+  animation: svSavedPulse 0.8s ease-out;
+}
+
+@keyframes svSavedPulse {
+  0% { background: var(--accent-soft); box-shadow: 0 0 0 0 var(--accent-glow); }
+  50% { background: var(--accent-soft); box-shadow: 0 0 12px 2px var(--accent-glow); }
+  100% { background: var(--subtitle-bg); box-shadow: none; }
+}
+
+.subtitle-empty {
+  height: 100%;
+}
+
+.sv-ruby {
+  ruby-position: over;
+  display: inline;
+}
+
+.sv-rt {
+  font-size: 0.45em;
+  color: var(--text-muted);
+  line-height: 1;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .subtitle-panel {
+    height: 140px;
+    padding: 8px 16px;
+  }
+  .subtitle-panel.sv-fullscreen {
+    height: 180px;
+  }
+  .subtitle-line {
+    padding: 3px 10px;
+    line-height: 1.8;
+  }
+}

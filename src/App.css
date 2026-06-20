@@ -1,0 +1,68 @@
+.app-root {
+  position: relative;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.main-layout {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+}
+
+.player-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  padding: 12px 12px 0;
+  gap: 0;
+  overflow: hidden;
+}
+
+.player-wrapper.is-fullscreen {
+  padding: 0;
+  background: #000;
+}
+
+.video-area {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+
+.video-area.fs-video {
+  flex: 1;
+}
+
+.subtitle-area {
+  flex-shrink: 0;
+  height: 170px;
+}
+
+.subtitle-area.fs-subtitle {
+  height: 210px;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+@media (max-width: 768px) {
+  .player-wrapper {
+    padding: 0;
+  }
+  .subtitle-area {
+    height: 140px;
+  }
+  .subtitle-area.fs-subtitle {
+    height: 180px;
+  }
+}
