@@ -13,6 +13,15 @@
 
 ---
 
+<div align="center">
+
+![Demo 1](Demo-1.png)
+![Demo 2](Demo-2.png)
+
+</div>
+
+---
+
 ## What is Sumire View?
 
 Sumire View is a lightweight, responsive video player designed specifically for anime learners. It combines a clean, Apple-inspired Japanese aesthetic with powerful language-learning tools — letting you watch, read, and study without ever leaving the player.
