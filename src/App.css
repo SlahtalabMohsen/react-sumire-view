@@ -45,7 +45,7 @@
 
 .subtitle-area {
   flex-shrink: 0;
-  height: 170px;
+  height: 100%;
 }
 
 .subtitle-area.fs-subtitle {
@@ -55,12 +55,51 @@
   -webkit-backdrop-filter: blur(12px);
 }
 
+.panel-resize-divider {
+  flex: 0 0 6px;
+  height: 6px;
+  cursor: row-resize;
+  position: relative;
+  z-index: 10;
+  background: transparent;
+  transition: background 0.15s, box-shadow 0.15s;
+}
+
+.panel-resize-divider::after {
+  content: '';
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 2px;
+  border-radius: 1px;
+  background: rgba(139, 92, 246, 0.25);
+  transition: background 0.15s, box-shadow 0.15s, height 0.15s;
+}
+
+.panel-resize-divider:hover::after {
+  background: rgba(139, 92, 246, 0.55);
+  height: 3px;
+  box-shadow: 0 0 8px rgba(139, 92, 246, 0.3);
+}
+
+.panel-resize-divider:active::after {
+  background: rgba(139, 92, 246, 0.8);
+  height: 3px;
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.5);
+}
+
+@media (max-width: 768px) {
+  .panel-resize-divider::after {
+    left: 12px;
+    right: 12px;
+  }
+}
+
 @media (max-width: 768px) {
   .player-wrapper {
     padding: 0;
-  }
-  .subtitle-area {
-    height: 140px;
   }
   .subtitle-area.fs-subtitle {
     height: 180px;

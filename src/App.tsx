@@ -16,6 +16,7 @@ import { useSubtitles } from './hooks/useSubtitles';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
 import { useTheme } from './hooks/useTheme';
 import { useVocabulary } from './hooks/useVocabulary';
+import { usePanelResize } from './hooks/usePanelResize';
 import type { Bookmark, Comment, PlayerSettings } from './types';
 import './App.css';
 
@@ -48,6 +49,7 @@ function App() {
   const { tracks, activeTrackIds, addTrack, removeTrack, toggleTrack, getActiveCues } =
     useSubtitles();
   const vocabulary = useVocabulary();
+  const panelResize = usePanelResize();
 
   const currentCues = useMemo(
     () => getActiveCues(player.currentTime),
@@ -254,10 +256,16 @@ function App() {
 
       <main className="main-layout">
         <div
-          ref={fullscreenWrapperRef}
+          ref={(el) => {
+            (fullscreenWrapperRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+            (panelResize.wrapperRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+          }}
           className={`player-wrapper ${player.isFullscreen ? 'is-fullscreen' : ''}`}
         >
-          <div className={`video-area ${player.isFullscreen ? 'fs-video' : ''}`}>
+          <div
+            className={`video-area ${player.isFullscreen ? 'fs-video' : ''}`}
+            style={player.isFullscreen ? undefined : { flex: 'none', height: `calc(${panelResize.ratio * 100}% - ${panelResize.dividerHeight / 2}px)` }}
+          >
             <VideoPlayer
               videoRef={player.videoRef}
               isPlaying={player.isPlaying}
@@ -281,8 +289,20 @@ function App() {
             />
           </div>
 
+          {!player.isFullscreen && showSubtitles && (
+            <div
+              className="panel-resize-divider"
+              onPointerDown={panelResize.onDividerPointerDown}
+              onPointerMove={panelResize.onDividerPointerMove}
+              onPointerUp={panelResize.onDividerPointerUp}
+            />
+          )}
+
           {showSubtitles && (
-            <div className={`subtitle-area ${player.isFullscreen ? 'fs-subtitle' : ''}`}>
+            <div
+              className={`subtitle-area ${player.isFullscreen ? 'fs-subtitle' : ''}`}
+              style={player.isFullscreen ? undefined : { flex: 'none', height: `calc(${(1 - panelResize.ratio) * 100}% - ${panelResize.dividerHeight / 2}px)` }}
+            >
               <SubtitlePanel
                 tracks={tracks}
                 activeTrackIds={activeTrackIds}

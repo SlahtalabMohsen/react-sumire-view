@@ -1,5 +1,5 @@
 .subtitle-panel {
-  height: 170px;
+  height: 100%;
   padding: 10px 24px;
   display: flex;
   flex-direction: column;
@@ -104,7 +104,6 @@
 
 @media (max-width: 768px) {
   .subtitle-panel {
-    height: 140px;
     padding: 8px 16px;
   }
   .subtitle-panel.sv-fullscreen {
