@@ -1,6 +1,5 @@
 import { useRef, useEffect, useCallback, type ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Tooltip } from '../Tooltip/Tooltip';
 import './MinimalSidebar.css';
 
 type TabId = 'subtitles' | 'bookmarks' | 'comments' | 'vocabulary' | 'log';
@@ -82,24 +81,23 @@ export function MinimalSidebar({
     >
       <div className="sidebar-rail">
         {TABS.map(tab => (
-          <Tooltip key={tab.id} content={tab.label} side="left">
-            <button
-              className={`rail-btn ${activeTab === tab.id && isExpanded ? 'active' : ''}`}
-              onClick={() => handleTabClick(tab.id)}
-              title=""
-              role="tab"
-              aria-selected={activeTab === tab.id}
-              aria-label={tab.label}
-            >
-              <span
-                className="rail-icon"
-                dangerouslySetInnerHTML={{ __html: tab.svg }}
-              />
-              {tab.id === 'vocabulary' && vocabularyCount > 0 && (
-                <span className="rail-badge">{vocabularyCount}</span>
-              )}
-            </button>
-          </Tooltip>
+          <button
+            key={tab.id}
+            className={`rail-btn ${activeTab === tab.id ? 'active' : ''}`}
+            onClick={() => handleTabClick(tab.id)}
+            title={tab.label}
+            role="tab"
+            aria-selected={activeTab === tab.id}
+            aria-label={tab.label}
+          >
+            <span
+              className="rail-icon"
+              dangerouslySetInnerHTML={{ __html: tab.svg }}
+            />
+            {tab.id === 'vocabulary' && vocabularyCount > 0 && (
+              <span className="rail-badge">{vocabularyCount}</span>
+            )}
+          </button>
         ))}
       </div>
 

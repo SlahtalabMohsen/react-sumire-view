@@ -141,3 +141,7 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Whisper server
+whisper-server/venv/
+whisper-server/__pycache__/

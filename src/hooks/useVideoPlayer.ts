@@ -9,6 +9,7 @@ export function useVideoPlayer() {
   const [isMuted, setIsMuted] = useState(false);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [videoFileName, setVideoFileName] = useState<string | undefined>(undefined);
 
   const togglePlay = useCallback(() => {
     const video = videoRef.current;
@@ -72,11 +73,12 @@ export function useVideoPlayer() {
     []
   );
 
-  const loadVideo = useCallback((url: string) => {
+  const loadVideo = useCallback((url: string, fileName?: string) => {
     const video = videoRef.current;
     if (!video) return;
     video.src = url;
     video.load();
+    setVideoFileName(fileName);
   }, []);
 
   return {
@@ -92,6 +94,7 @@ export function useVideoPlayer() {
     playbackRate,
     isFullscreen,
     setIsFullscreen,
+    videoFileName,
     togglePlay,
     seek,
     changeVolume,

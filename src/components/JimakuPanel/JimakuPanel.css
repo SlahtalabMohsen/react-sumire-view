@@ -1,0 +1,274 @@
+/* Jimaku subtitle search panel */
+.jm-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: var(--surface-secondary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+.jm-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.jm-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.jm-key-row {
+  display: flex;
+  gap: 6px;
+}
+
+.jm-key-input,
+.jm-search-input {
+  flex: 1;
+  min-width: 0;
+  font-size: 11px;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-primary);
+}
+
+.jm-key-input::placeholder,
+.jm-search-input::placeholder {
+  color: var(--text-muted);
+}
+
+.jm-key-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.jm-link {
+  font-size: 10px;
+  color: var(--accent);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.jm-link:hover {
+  opacity: 0.8;
+}
+
+.jm-note {
+  margin: 0;
+  font-size: 10px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.jm-note code {
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+
+.jm-search-row {
+  display: flex;
+  gap: 6px;
+}
+
+.jm-episode-input {
+  width: 52px;
+  font-size: 11px;
+  padding: 6px 4px;
+  text-align: center;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-primary);
+}
+
+.jm-detected {
+  margin: 0;
+  font-size: 10px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.jm-detected strong {
+  color: var(--text-secondary);
+}
+
+.jm-error {
+  padding: 6px 8px;
+  font-size: 11px;
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.08);
+  border-radius: var(--radius-sm);
+  line-height: 1.4;
+}
+
+.jm-hint {
+  padding: 6px 8px;
+  font-size: 11px;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-radius: var(--radius-sm);
+}
+
+.jm-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.jm-list-label {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--text-muted);
+  padding: 0 2px;
+}
+
+.jm-entry {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  width: 100%;
+  text-align: left;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.jm-entry:hover {
+  border-color: var(--accent);
+}
+
+.jm-entry.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.jm-entry:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.jm-entry-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.jm-entry-sub {
+  font-size: 9px;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.jm-tag {
+  align-self: flex-start;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 999px;
+  color: var(--text-muted);
+  background: var(--surface-secondary);
+}
+
+.jm-tag.warn {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.12);
+}
+
+.jm-file {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.jm-file-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.jm-file-name {
+  font-size: 11px;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.jm-file-meta {
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+.jm-file-actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.jm-btn {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s, transform 0.1s;
+}
+
+.jm-btn.small {
+  font-size: 10px;
+  padding: 4px 8px;
+}
+
+.jm-btn:hover:not(:disabled) {
+  background: var(--surface-secondary);
+}
+
+.jm-btn:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.jm-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.jm-btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+.jm-btn.primary:hover:not(:disabled) {
+  opacity: 0.9;
+  background: var(--accent);
+}

@@ -19,7 +19,7 @@ interface VideoPlayerProps {
   onSkip: (s: number) => void;
   onToggleFullscreen: (el: HTMLElement | null) => void;
   isFullscreen: boolean;
-  onLoadVideo: (url: string) => void;
+  onLoadVideo: (url: string, fileName?: string) => void;
   setIsPlaying: (p: boolean) => void;
   setDuration: (d: number) => void;
   setCurrentTime: (t: number) => void;
@@ -100,7 +100,7 @@ export const VideoPlayer = memo(function VideoPlayer({
       e.preventDefault();
       const file = e.dataTransfer.files[0];
       if (file && file.type.startsWith('video/')) {
-        onLoadVideo(URL.createObjectURL(file));
+        onLoadVideo(URL.createObjectURL(file), file.name);
       }
     },
     [onLoadVideo]
@@ -109,7 +109,7 @@ export const VideoPlayer = memo(function VideoPlayer({
   const handleFileSelect = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
-      if (file) onLoadVideo(URL.createObjectURL(file));
+      if (file) onLoadVideo(URL.createObjectURL(file), file.name);
     },
     [onLoadVideo]
   );

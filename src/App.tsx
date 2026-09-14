@@ -9,13 +9,17 @@ import { BookmarkPanel } from './components/BookmarkPanel/BookmarkPanel';
 import { CommentSection } from './components/CommentSection/CommentSection';
 import { MinimalSidebar } from './components/MinimalSidebar/MinimalSidebar';
 import { CherryBlossom } from './components/CherryBlossom/CherryBlossom';
+import { LiveJapaneseSubtitles } from './components/LiveJapaneseSubtitles/LiveJapaneseSubtitles';
+import { JimakuPanel } from './components/JimakuPanel/JimakuPanel';
 import { useVideoPlayer } from './hooks/useVideoPlayer';
 import { useSubtitles } from './hooks/useSubtitles';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
 import { useTheme } from './hooks/useTheme';
 import { useVocabulary } from './hooks/useVocabulary';
 import { usePanelResize } from './hooks/usePanelResize';
-import type { Bookmark, Comment, PlayerSettings } from './types';
+import { useWhisper } from './hooks/useWhisper';
+import { useJimaku } from './hooks/useJimaku';
+import type { Bookmark, Comment, PlayerSettings, SubtitleCue, SubtitleSource } from './types';
 import './App.css';
 
 const Settings = lazy(() => import('./components/Settings/Settings').then(m => ({ default: m.Settings })));
@@ -31,7 +35,8 @@ function App() {
   const [activeTab, setActiveTab] = useState<TabId>('subtitles');
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
 
-  const fullscreenWrapperRef = useRef<HTMLDivElement>(null);
+  const fullscreenWrapperRef = useRef<HTMLDivElement | null>(null);
+  const panelResize = usePanelResize(fullscreenWrapperRef);
 
   const [settings, setSettings] = useState<PlayerSettings>({
     subtitleSize: 20,
@@ -47,10 +52,28 @@ function App() {
   });
 
   const player = useVideoPlayer();
-  const { tracks, activeTrackIds, addTrack, removeTrack, toggleTrack, getActiveCues } =
+  const { tracks, activeTrackIds, addTrack, removeTrack, toggleTrack, updateTrackCues, activateTrack, getActiveCues } =
     useSubtitles();
   const vocabulary = useVocabulary();
-  const panelResize = usePanelResize();
+
+  const handleLiveTrackUpdate = useCallback(
+    (trackId: string, cues: SubtitleCue[], source: SubtitleSource) => {
+      updateTrackCues(trackId, cues, source);
+      activateTrack(trackId);
+    },
+    [updateTrackCues, activateTrack]
+  );
+
+  const whisper = useWhisper({
+    videoRef: player.videoRef,
+    videoFileName: player.videoFileName,
+    onTrackUpdate: handleLiveTrackUpdate,
+  });
+
+  const jimaku = useJimaku({
+    videoFileName: player.videoFileName,
+    onLoadTrack: addTrack,
+  });
 
   const currentCues = useMemo(
     () => getActiveCues(player.currentTime),
@@ -149,6 +172,21 @@ function App() {
     <>
       {activeTab === 'subtitles' && (
         <div className="flex flex-col gap-3">
+          <LiveJapaneseSubtitles
+            status={whisper.status}
+            progress={whisper.progress}
+            device={whisper.device}
+            settings={whisper.settings}
+            errorMessage={whisper.errorMessage}
+            transcribedCount={whisper.transcribedCount}
+            onUpdateSettings={whisper.updateSettings}
+            onStart={whisper.start}
+            onStop={whisper.stop}
+            onExportSRT={whisper.exportSRT}
+            onExportTXT={whisper.exportTXT}
+            onClear={whisper.clearCues}
+          />
+          <JimakuPanel {...jimaku} />
           <SubtitleImport onImport={addTrack} />
           {tracks.length > 0 && (
             <div>
@@ -172,6 +210,15 @@ function App() {
                       />
                       <span className="text-sm truncate" style={{ color: 'var(--text-primary)' }}>
                         {track.label}
+                      </span>
+                      <span
+                        className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded"
+                        style={{
+                          color: 'var(--text-muted)',
+                          background: 'var(--surface)',
+                        }}
+                      >
+                        {track.source ?? 'local'}
                       </span>
                       <span className="text-[10px] whitespace-nowrap" style={{ color: 'var(--text-muted)' }}>
                         {track.format.toUpperCase()} · {track.cues.length}
@@ -260,10 +307,7 @@ function App() {
 
       <main className="main-layout">
         <div
-          ref={(el) => {
-            (fullscreenWrapperRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
-            (panelResize.wrapperRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
-          }}
+          ref={fullscreenWrapperRef}
           className={`player-wrapper ${player.isFullscreen ? 'is-fullscreen' : ''}`}
         >
           <div

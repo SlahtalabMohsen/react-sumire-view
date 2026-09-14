@@ -1,0 +1,249 @@
+/* Live Japanese Subtitles (Whisper) */
+.ljs-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: var(--surface-secondary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+.ljs-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.ljs-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ljs-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.ljs-device-badge {
+  flex-shrink: 0;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+
+.ljs-device-badge.gpu {
+  color: #22c55e;
+  background: rgba(34, 197, 94, 0.12);
+}
+
+.ljs-device-badge.wasm {
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.12);
+}
+
+.ljs-hint {
+  margin: 0;
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.3px;
+}
+
+.ljs-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.ljs-btn {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s, transform 0.1s;
+}
+
+.ljs-btn:hover:not(:disabled) {
+  background: var(--surface-secondary);
+}
+
+.ljs-btn:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.ljs-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ljs-btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+.ljs-btn.primary:hover:not(:disabled) {
+  opacity: 0.9;
+  background: var(--accent);
+}
+
+.ljs-btn.danger {
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #ef4444;
+}
+
+.ljs-btn.danger:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+.ljs-btn.ghost {
+  border-color: transparent;
+  color: var(--text-muted);
+  background: transparent;
+}
+
+.ljs-setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.ljs-select {
+  font-size: 11px;
+  padding: 4px 6px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-primary);
+  max-width: 55%;
+}
+
+.ljs-select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ljs-pills {
+  display: flex;
+  gap: 4px;
+}
+
+.ljs-pill {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.ljs-pill.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+.ljs-pill:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ljs-status-bar {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ljs-status-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+}
+
+.ljs-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.ljs-status-text {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.ljs-count {
+  margin-left: auto;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.ljs-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 2px;
+}
+
+.ljs-progress-track {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.ljs-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent);
+  transition: width 0.25s ease-out;
+}
+
+.ljs-progress-label {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.ljs-error {
+  padding: 6px 8px;
+  font-size: 11px;
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.08);
+  border-radius: var(--radius-sm);
+  line-height: 1.4;
+  white-space: pre-wrap;
+}
+
+.ljs-note {
+  margin: 0;
+  padding: 8px 10px;
+  font-size: 10px;
+  color: var(--text-muted);
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  line-height: 1.5;
+}

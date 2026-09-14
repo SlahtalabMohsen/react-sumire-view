@@ -1,8 +1,16 @@
+/**
+ * Where a subtitle track / cue originated.
+ * Sources are never mixed: Whisper live output, Jimaku downloads and local
+ * imports each live on their own track.
+ */
+export type SubtitleSource = 'whisper' | 'jimaku' | 'local';
+
 export interface SubtitleCue {
   id: string;
   startTime: number;
   endTime: number;
   text: string;
+  source?: SubtitleSource;
   style?: SubtitleStyle;
 }
 
@@ -22,6 +30,7 @@ export interface SubtitleTrack {
   language: string;
   cues: SubtitleCue[];
   format: 'srt' | 'vtt' | 'ass';
+  source?: SubtitleSource;
 }
 
 export interface Bookmark {

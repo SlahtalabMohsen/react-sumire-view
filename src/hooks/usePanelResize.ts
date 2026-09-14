@@ -10,7 +10,7 @@ function clampRatio(v: number) {
   return Math.min(MAX_RATIO, Math.max(MIN_RATIO, v));
 }
 
-export function usePanelResize() {
+export function usePanelResize(wrapperRef: React.RefObject<HTMLDivElement | null>) {
   const [ratio, setRatio] = useState<number>(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
@@ -23,7 +23,6 @@ export function usePanelResize() {
   });
 
   const dragging = useRef(false);
-  const wrapperRef = useRef<HTMLDivElement>(null);
 
   const persist = useCallback((r: number) => {
     try { localStorage.setItem(STORAGE_KEY, String(r)); } catch { /* ignore */ }
@@ -36,7 +35,7 @@ export function usePanelResize() {
     dragging.current = true;
     document.body.style.cursor = 'row-resize';
     document.body.style.userSelect = 'none';
-  }, []);
+  }, [wrapperRef]);
 
   const onPointerMove = useCallback((e: React.PointerEvent) => {
     if (!dragging.current || !wrapperRef.current) return;
@@ -45,7 +44,7 @@ export function usePanelResize() {
     const y = e.clientY - rect.top;
     const raw = y / available;
     setRatio(clampRatio(raw));
-  }, []);
+  }, [wrapperRef]);
 
   const onPointerUp = useCallback((e: React.PointerEvent) => {
     if (!dragging.current) return;

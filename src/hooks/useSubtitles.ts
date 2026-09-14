@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import type { SubtitleTrack, SubtitleCue } from '../types';
+import type { SubtitleTrack, SubtitleCue, SubtitleSource } from '../types';
 
 export function useSubtitles() {
   const [tracks, setTracks] = useState<SubtitleTrack[]>([]);
@@ -27,6 +27,36 @@ export function useSubtitles() {
     });
   }, []);
 
+  const updateTrackCues = useCallback(
+    (trackId: string, cues: SubtitleCue[], source?: SubtitleSource) => {
+      setTracks(prev => {
+        const existing = prev.find(t => t.id === trackId);
+        if (existing) {
+          return prev.map(t => (t.id === trackId ? { ...t, cues, source: source ?? existing.source } : t));
+        }
+        return [
+          ...prev,
+          {
+            id: trackId,
+            label: 'Live Whisper Japanese',
+            language: 'ja',
+            cues,
+            format: 'srt' as const,
+            source: source ?? 'whisper',
+          },
+        ];
+      });
+    },
+    []
+  );
+
+  const activateTrack = useCallback((trackId: string) => {
+    setActiveTrackIds(prev => {
+      if (!prev.includes(trackId)) return [...prev, trackId];
+      return prev;
+    });
+  }, []);
+
   const getActiveCues = useCallback(
     (time: number): SubtitleCue[][] => {
       return activeTrackIds.map(trackId => {
@@ -46,6 +76,8 @@ export function useSubtitles() {
     addTrack,
     removeTrack,
     toggleTrack,
+    updateTrackCues,
+    activateTrack,
     getActiveCues,
   };
 }
